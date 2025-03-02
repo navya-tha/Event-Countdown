@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)https://app.onecompiler.com/43a8zepec_43am93qbd/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown Timer</title>
+  <style>
+    .countdown {
+      display: flex;
+      gap: 20px;
+      font-size: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .counter {
+      text-align: center;
+    }
+    .counter .value {
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .counter .suffix {
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Event Countdown Timer</h1>
+
+  <!-- Date Selection Input -->
+  <label for="event-date">Select Event Date and Time:</label>
+  <input type="datetime-local" id="event-date" name="event-date">
+
+  <div class="countdown" id="countdown-timer" style="display:none;">
+    <div class="counter">
+      <span class="value" id="days">0</span>
+      <span class="suffix">Days</span>
+    </div>
+
+    <div class="counter">
+      <span class="value" id="hours">0</span>
+      <span class="suffix">Hours</span>
+    </div>
+
+    <div class="counter">
+      <span class="value" id="minutes">0</span>
+      <span class="suffix">Mins</span>
+    </div>
+
+    <div class="counter">
+      <span class="value" id="seconds">0</span>
+      <span class="suffix">Secs</span>
+    </div>
+  </div>
+
+  <div id="event-message" style="display:none; font-size: 24px; color: green;">
+    <strong>The event has started!</strong>
+  </div>
+
+  <script>
+    // Function to start the countdown
+    function startCountdown() {
+      const eventDateInput = document.getElementById('event-date').value;
+      if (!eventDateInput) {
+        alert('Please select a valid event date!');
+        return;
+      }
+
+      const targetDate = new Date(eventDateInput).getTime();
+      const countdownTimer = document.getElementById('countdown-timer');
+      const eventMessage = document.getElementById('event-message');
+      countdownTimer.style.display = 'flex';
+
+      // Update the countdown every 1 second
+      const countdownInterval = setInterval(function() {
+        const now = new Date().getTime();
+        const timeLeft = targetDate - now;
+
+        // Calculate days, hours, minutes, and seconds
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        // Update the countdown display
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = hours;
+        document.getElementById('minutes').textContent = minutes;
+        document.getElementById('seconds').textContent = seconds;
+
+        // When the countdown reaches zero, stop the interval and show a message
+        if (timeLeft < 0) {
+          clearInterval(countdownInterval);
+          countdownTimer.style.display = 'none';
+          eventMessage.style.display = 'block';
+          alert("The event has started!");
+        }
+      }, 1000);
+    }
+
+    // Event listener for the date input change
+    document.getElementById('event-date').addEventListener('change', startCountdown);
+  </script>
+
+
+
+</body></html>
